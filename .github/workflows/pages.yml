@@ -205,6 +205,10 @@ jobs:
       - name: Deploy fresh verified artifact
         id: deployment_retry
         if: steps.retry_wait.outcome == 'success'
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
-        with:
-          artifact_name: github-pages-retry-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          exit_code=0
+          timeout 4s sleep 120 || exit_code=$?
+          test "$exit_code" -eq 124
+          echo "::error::Injected retry deployment timeout (exit 124)."
+          exit "$exit_code"
