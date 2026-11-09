@@ -1,0 +1,33 @@
+name: Isolated fixture verification
+on:
+  workflow_call:
+    inputs:
+      force_full:
+        type: boolean
+        default: false
+      publish:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  verify-fixture:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Check and package the isolated fixture
+        env:
+          REQUEST_PUBLICATION: ${{ inputs.publish }}
+        run: python3 -B verify-fixture.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: test-plan-${{ github.sha }}
+          path: output/test-plan.json
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: verified-web-${{ github.sha }}
+          path: output/site
+          if-no-files-found: error

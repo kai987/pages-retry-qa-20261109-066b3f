@@ -1,2 +1,3 @@
-# pages-retry-qa-20261109-066b3f
-Isolated GitHub Pages retry smoke test with a minimal fixture
+# GitHub Pages retry smoke test
+
+This standalone fixture checks automatic retry after a deliberately timed-out first step. It contains a single test page and uses its own GitHub Pages project site.

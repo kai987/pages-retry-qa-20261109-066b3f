@@ -1,0 +1,11 @@
+name: Web campaign checks
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  fixture-ci:
+    uses: ./.github/workflows/web-checks.yml
+    with:
+      publish: true
